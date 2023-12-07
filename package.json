@@ -1,0 +1,44 @@
+{
+  "name": "vite-plugin-ngrok",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format cjs,esm",
+    "dev": "pnpm build --watch"
+  },
+  "peerDependencies": {
+    "vite": "^2.9.0 || ^3.0.0 || ^4.0.0 || ^5.0.0"
+  },
+  "keywords": [
+    "vite-plugin",
+    "vite",
+    "ngrok"
+  ],
+  "author": "Ross Gerbasi",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.3",
+    "prettier": "^3.1.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.6"
+  },
+  "dependencies": {
+    "@ngrok/ngrok": "^0.9.1",
+    "picocolors": "^1.0.0"
+  }
+}
