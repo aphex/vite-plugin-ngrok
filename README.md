@@ -1,4 +1,4 @@
-<div style="display:flex; justify-content:center; align-items:center ;gap:1rem">
+<div align="center">
   <img src="./public/vite.svg" width="100px"> 
   <span style="font-size:3rem;color:white">➕</span>
   <img src="./public/ngrok.svg" width="100px">
