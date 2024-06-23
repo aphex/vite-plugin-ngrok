@@ -70,8 +70,8 @@ ngrok('NGROK_AUTH_TOKEN_IN_HERE'),
 
 ```ts
 ngrok({
-  domain: 'my-domain',
-  compression: true
+  domain: 'my-domain.ngrok.app',
+  compression: true,
   authtoken: 'NGROK_AUTH_TOKEN_IN_HERE',
   ...
 })
