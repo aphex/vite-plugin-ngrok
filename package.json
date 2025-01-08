@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-ngrok",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Vite plugin for seamless integration with ngrok, allowing you to easily share your local development server with anyone, anywhere.",
   "type": "module",
   "exports": {
