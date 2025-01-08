@@ -21,7 +21,7 @@
     "dev": "pnpm build --watch"
   },
   "peerDependencies": {
-    "vite": "^2.9.0 || ^3.0.0 || ^4.0.0 || ^5.0.0"
+    "vite": "^2.9.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0"
   },
   "keywords": [
     "vite-plugin",
@@ -39,14 +39,14 @@
   },
   "homepage": "https://github.com/aphex/vite-plugin-ngrok#readme",
   "devDependencies": {
-    "@types/node": "^20.10.3",
-    "prettier": "^3.1.0",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.6"
+    "@types/node": "^22.10.5",
+    "prettier": "^3.4.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
   },
   "dependencies": {
-    "@ngrok/ngrok": "^0.9.1",
-    "picocolors": "^1.0.0"
+    "@ngrok/ngrok": "^1.4.1",
+    "picocolors": "^1.1.1"
   }
 }
