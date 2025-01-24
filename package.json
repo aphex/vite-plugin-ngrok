@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-ngrok",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Vite plugin for seamless integration with ngrok, allowing you to easily share your local development server with anyone, anywhere.",
   "type": "module",
   "exports": {
@@ -39,11 +39,11 @@
   },
   "homepage": "https://github.com/aphex/vite-plugin-ngrok#readme",
   "devDependencies": {
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.10",
     "prettier": "^3.4.2",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.7"
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
   },
   "dependencies": {
     "@ngrok/ngrok": "^1.4.1",

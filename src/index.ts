@@ -9,7 +9,23 @@ export const ngrok = (config?: Config | string) =>
   ({
     name: 'ngrok',
     configureServer(server) {
-      const { httpServer } = server
+      const {
+        httpServer,
+        config: {
+          server: { allowedHosts },
+        },
+      } = server
+
+      if (allowedHosts !== true) {
+        const domain = typeof config === 'string' ? undefined : config?.domain
+        const hosts = domain
+          ? [domain]
+          : allowedHosts.find((h) => h.includes('.ngrok'))
+            ? []
+            : ['.ngrok.io', '.ngrok.app', '.ngrok.dev', '.ngrok-free.app', '.ngrok-free.dev']
+
+        allowedHosts.push(...hosts)
+      }
 
       let listener: Listener
       httpServer?.on('listening', async () => {
