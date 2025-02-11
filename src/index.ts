@@ -5,28 +5,10 @@ import _ngrok, { type Listener, type Config } from '@ngrok/ngrok'
 /**
  * Vite ngrok plugin allowing you to expose your local server to the internet.
  */
-export const ngrok = (config?: Config | string) =>
+export const ngrok = (options?: Config | string) =>
   ({
     name: 'ngrok',
-    configureServer(server) {
-      const {
-        httpServer,
-        config: {
-          server: { allowedHosts },
-        },
-      } = server
-
-      if (allowedHosts !== true) {
-        const domain = typeof config === 'string' ? undefined : config?.domain
-        const hosts = domain
-          ? [domain]
-          : allowedHosts.find((h) => h.includes('.ngrok'))
-            ? []
-            : ['.ngrok.io', '.ngrok.app', '.ngrok.dev', '.ngrok-free.app', '.ngrok-free.dev']
-
-        allowedHosts.push(...hosts)
-      }
-
+    configureServer({ config, httpServer }) {
       let listener: Listener
       httpServer?.on('listening', async () => {
         const address = httpServer.address()
@@ -34,16 +16,21 @@ export const ngrok = (config?: Config | string) =>
 
         listener = await _ngrok.forward({
           addr: address.port,
-          ...(typeof config === 'string'
-            ? { authtoken: config }
-            : !config
+          ...(typeof options === 'string'
+            ? { authtoken: options }
+            : !options
               ? { authtoken_from_env: true }
-              : config),
+              : options),
         })
 
-        server.config.logger.info(
-          pc.magenta('  ➜') + pc.magenta('  ngrok: ') + pc.cyan(listener.url()),
-        )
+        const url = listener.url()
+        if (!url) return
+
+        if (Array.isArray(config.server.allowedHosts)) {
+          config.server.allowedHosts.push(new URL(url).hostname)
+        }
+
+        config.logger.info(pc.magenta('  ➜') + pc.magenta('  ngrok:   ') + pc.cyan(url))
       })
 
       // Clean up ngrok when the server closes
