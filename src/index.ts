@@ -5,35 +5,47 @@ import _ngrok, { type Listener, type Config } from '@ngrok/ngrok'
 /**
  * Vite ngrok plugin allowing you to expose your local server to the internet.
  */
-export const ngrok = (options?: Config | string) =>
-  ({
+export const ngrok = (options?: Config | string) => {
+  let listener: Listener
+  let url: string = ''
+
+  return {
     name: 'ngrok',
-    configureServer({ config, httpServer }) {
-      let listener: Listener
-      httpServer?.on('listening', async () => {
-        const address = httpServer.address()
-        if (listener || !address || typeof address === 'string') return
 
-        listener = await _ngrok.forward({
-          addr: address.port,
-          ...(typeof options === 'string'
-            ? { authtoken: options }
-            : !options
-              ? { authtoken_from_env: true }
-              : options),
-        })
+    async configResolved(config) {
+      const port = config.server.port || 5173
 
-        const url = listener.url()
-        if (!url) return
-
-        if (Array.isArray(config.server.allowedHosts)) {
-          config.server.allowedHosts.push(new URL(url).hostname)
-        }
-
-        config.logger.info(pc.magenta('  ➜') + pc.magenta('  ngrok:   ') + pc.cyan(url))
+      listener = await _ngrok.forward({
+        addr: port,
+        ...(typeof options === 'string'
+          ? { authtoken: options }
+          : !options
+            ? { authtoken_from_env: true }
+            : options),
       })
 
-      // Clean up ngrok when the server closes
-      httpServer?.on('close', async () => listener?.close())
+      url = listener.url() ?? ''
+      if (!url) return
+
+      const hostname = new URL(url).hostname
+
+      if (config.server.allowedHosts === true) return
+
+      const hosts = Array.isArray(config.server.allowedHosts) ? config.server.allowedHosts : []
+      config.server.allowedHosts = [...hosts, hostname]
     },
-  }) satisfies Plugin
+
+    configureServer(server) {
+      const { config, printUrls } = server
+
+      if (url) {
+        server.printUrls = () => {
+          printUrls()
+          config.logger.info(`  ${pc.magenta('➜')}  ${pc.magenta('ngrok')}:   ${pc.cyan(url)}`)
+        }
+      }
+
+      server.httpServer?.on('close', () => listener?.close())
+    },
+  } satisfies Plugin
+}
