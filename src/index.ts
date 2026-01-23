@@ -11,6 +11,7 @@ export const ngrok = (options?: Config | string) => {
 
   return {
     name: 'ngrok',
+    apply: (_config, { command, mode }) => command === 'serve' && mode !== 'test',
 
     async configResolved(config) {
       const port = config.server.port || 5173
